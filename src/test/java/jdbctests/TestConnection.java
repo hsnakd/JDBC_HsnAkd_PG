@@ -19,17 +19,36 @@ public class TestConnection {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM REGIONS");
 
+        // once you set up connection default pointer looks for 0
+
 
         // next() ==> move pointer to first row
         resultSet.next();
 
         // getting information with column name
         String result = resultSet.getString("REGION_NAME");
-        System.out.println("result = " + result);
+        System.out.println("With Column Name : " + result);
 
         // getting information with column index (starts 1)
-        int resultInt = resultSet.getInt(1);
-        System.out.println("result = " + resultInt);
+        String result2 = resultSet.getString(2);
+        System.out.println("With Index Number : " + result2);
+
+        // 1 - Europe
+        System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
+
+        // next() ==> move pointer to next row ==> 2
+        resultSet.next();
+
+        // 2 - Americas
+        System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
+
+        // next() ==> move pointer to next row ==> 3
+        resultSet.next();
+
+        // 3 - Asia
+        System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
+
+
 
         // CLOSE CONNECTIONS
         resultSet.close();
