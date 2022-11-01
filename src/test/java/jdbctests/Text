@@ -1,0 +1,49 @@
+ * host     ==> @3.86.235.137
+ * port     ==> 1521
+ * SID      ==> XE (EXPRESS EDITION)
+ * user     ==> hr
+ * pass     ==> hr
+
+ * jdbc
+
+
+                        jdbc:DataBaseType:subprotocol:@Host:port:SID
+        String dbURL = "jdbc:oracle:thin:@3.86.235.137:1521:XE";
+        String dbUsername ="hr";
+        String dbPassword ="hr";
+
+    /**
+        This 3 steps are important and all comes from import java.sql.*;
+            Connection —> Helps our java project connect to database
+            Statement —> Helps to write and execute SQL query
+            ResultSet —> A data structure where we can store the data that came from database
+    */
+
+        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
+        Statement statement = connection.createStatement();
+//        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM REGIONS");
+
+
+
+    We use next() method to iterate each rows
+    While the next row is not NULL we can continue to iterate
+    If next row is NULL (empty),it exits the loop immediately
+    You can use getString(columnName) to get cell value
+
+* next()        ==> move to next row and return true/false according to if we have valid row
+* previous()    ==> move to previous row and return true/false according to if we have valid row
+* first()       ==> move to first row from anywhere
+* last()        ==> move to last row from anywhere
+* beforeFirst() ==> move to before first location from anywhere
+* afterLast()   ==> move to after last location from anywhere
+* absolute(8)   ==> move to any row by using row number, for example 8 in this case
+
+* getString(ColumnName)     ==>
+* getString(ColumnIndex)    ==>
+* getInt(ColumnName)        ==>
+* getInt(ColumnIndex)       ==>
+* getDouble(ColumnName)     ==>
+* getDouble(ColumnIndex)    ==>
+* getDate(ColumnName)       ==>
+* getDate(ColumnIndex)      ==>

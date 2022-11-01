@@ -6,14 +6,17 @@ public class TestConnectionLoop {
     public static void main(String[] args) throws SQLException {
 //        In order to test Database using JAVA, First step we need to connect Database via
 //        Connection String. It includes URL - Username - Password
+//                      jdbc:DataBaseType:subprotocol:@Host:port:SID
         String dbURL = "jdbc:oracle:thin:@3.86.235.137:1521:xe";
         String dbUsername ="hr";
         String dbPassword ="hr";
 
-//        This 3 steps are important and all comes from import java.sql.*;
-//        Connection —> Helps our java project connect to database
-//        Statement —> Helps to write and execute SQL query
-//        ResultSet —> A data structure where we can store the data that came from database
+        /**
+        This 3 steps are important and all comes from import java.sql.*;
+            Connection —> Helps our java project connect to database
+            Statement —> Helps to write and execute SQL query
+            ResultSet —> A data structure where we can store the data that came from database
+        */
 
         Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
         Statement statement = connection.createStatement();
@@ -51,10 +54,12 @@ public class TestConnectionLoop {
 
 
 
-        //
+
         while (resultSet.next()){
             System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
         }
+
+
 
         // CLOSE CONNECTIONS
         resultSet.close();
