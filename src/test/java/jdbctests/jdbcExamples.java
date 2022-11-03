@@ -111,7 +111,7 @@ public class jdbcExamples {
         connection.close();
     }
 
-    @DisplayName("")
+    @DisplayName("RSMD")
     @Test
     public void test3() throws SQLException {
 
@@ -128,7 +128,7 @@ public class jdbcExamples {
         System.out.println("databaseMetaData.getDriverName() = " + databaseMetaData.getDriverName());
         System.out.println("databaseMetaData.getDriverVersion() = " + databaseMetaData.getDriverVersion());
 
-    // get the resultSetMetaData --> rsmd
+    // get the resultSetMetaData --> resultSetMetaData
 
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 

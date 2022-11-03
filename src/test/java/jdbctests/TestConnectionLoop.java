@@ -19,38 +19,10 @@ public class TestConnectionLoop {
         */
 
         Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
-        Statement statement = connection.createStatement();
+        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         ResultSet resultSet = statement.executeQuery("SELECT * FROM REGIONS");
 
-//        // once you set up connection default pointer looks for 0
-//
-//
-//        // next() ==> move pointer to first row
-//        resultSet.next();
-//
-//        // getting information with column name
-//        String result = resultSet.getString("REGION_NAME");
-//        System.out.println("With Column Name : " + result);
-//
-//        // getting information with column index (starts 1)
-//        String result2 = resultSet.getString(2);
-//        System.out.println("With Index Number : " + result2);
-//
-//        // 1 - Europe
-//        System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
-//
-//        // next() ==> move pointer to next row ==> 2
-//        resultSet.next();
-//
-//        // 2 - Americas
-//        System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
-//
-//        // next() ==> move pointer to next row ==> 3
-//        resultSet.next();
-//
-//        // 3 - Asia
-//        System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
-//
+        // once you set up connection default pointer looks for 0
 
 
 
@@ -59,6 +31,35 @@ public class TestConnectionLoop {
             System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
         }
 
+        resultSet.beforeFirst();
+
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+
+        while (resultSet.next()){
+            System.out.print(rsmd.getColumnName(1) + " - " + resultSet.getString(1));
+            System.out.print(" / ");
+            System.out.println(rsmd.getColumnName(2) + " - " + resultSet.getString(2));
+
+        }
+
+
+        resultSet.beforeFirst();
+        int columnCount = rsmd.getColumnCount();
+
+        System.out.println();
+
+        for (int colIndex = 1; colIndex <=columnCount ; colIndex++) {
+            System.out.print(rsmd.getColumnName(colIndex) + " \t");
+        }
+
+        System.out.println();
+
+        while (resultSet.next()){
+            for (int colIndex = 1; colIndex <= columnCount; colIndex++) {
+                System.out.print(resultSet.getString(colIndex) + " \t" + " \t" + " \t");
+            }
+            System.out.println();
+        }
 
 
         // CLOSE CONNECTIONS
