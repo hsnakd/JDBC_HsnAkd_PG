@@ -8,17 +8,20 @@ import java.util.Map;
 
 public class DButilPractice {
 
+    String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
     @Test
     public void test1(){
 
         //create connection to db that you put information inside the method
+//        DBUtils2.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
         DBUtils.createConnection();
 
         int rownum = 6;
         String query = "SELECT first_name,last_name,salary,job_id\n" +
-                "from employees\n" +
-                "where rownum <" + rownum;
+                "from " + schemaName + ".employees\n" +
+                "LIMIT " + rownum;   // PostgreSQL
+        // oracle    "where rownum <" + rownum;
 
         // DBUtils.getQueryResultMap(query)
         // —> returns list of maps, useful when you are getting multiple rows of result.
@@ -37,10 +40,13 @@ public class DButilPractice {
     @Test
     public void test2(){
         //create connection
+//        DBUtils2.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
         DBUtils.createConnection();
         String query = "SELECT first_name,last_name,salary,job_id\n" +
-                "from employees\n" +
-                "where rownum <2";
+                "from information_schema.employees\n" +
+                "LIMIT 1"; // PostgreSQL
+          // oracle      "where rownum <2";
+
 
         // DBUtil.getRowMap(query)
         // —> returns maps of string of object useful when we have only one result.

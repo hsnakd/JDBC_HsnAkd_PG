@@ -1,74 +1,46 @@
 package jdbctests;
 
 import org.junit.jupiter.api.Test;
+import utilities.DBUtils;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public class DynamicList {
-    String dbURL = "jdbc:oracle:thin:@3.86.235.137:1521:xe";
-    String dbUsername ="hr";
-    String dbPassword ="hr";
 
     @Test
-    public void test2() throws SQLException {
-        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
-        Statement statement = connection.createStatement();
-//        ResultSet resultSet = statement.executeQuery("SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY\n" +
-//                "FROM EMPLOYEES\n" +  "WHERE ROWNUM < 6");
+    public void testDynamicList() throws SQLException {
+        // PostgreSQL's connection information
 
-        String sql = "SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY\n" + "FROM EMPLOYEES\n" + "WHERE ROWNUM < 6";
-        String sql1 = "SELECT * FROM EMPLOYEES";
+        // DBUtils.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
 
-        ResultSet resultSet = statement.executeQuery(sql);
+//        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+//        String dbUsername = "postgres";
+//        String dbPassword = "mysecretpassword";
+        String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
-        // in order to get column names we need resultSetMetaData
-        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+        // Connect to Docker PostgreSQL container
+//        DBUtils2.createConnection(dbURL, dbUsername, dbPassword);
+        DBUtils.createConnection();
 
-        // list of maps to keep all information
-        List<Map<String, Object>> queryData = new ArrayList<>();
+        // SQL query
+        String sql = "SELECT table_name, table_schema\n" +
+                "FROM "+schemaName+".tables\n" +
+                "WHERE table_schema = 'information_schema'\n" +
+                "LIMIT 5";
 
-        // number of columns
-        int colCount = resultSetMetaData.getColumnCount();
 
-        // loop through each row
-        while (resultSet.next()){
 
-            Map<String, Object> row = new HashMap<>();
+        // Retrieve query result
+        List<Map<String, Object>> queryData = DBUtils.getQueryResultMap(sql);
 
-            // some code to fill the dynamically
-            for (int i = 1; i <= colCount ; i++) {
-                row.put(resultSetMetaData.getColumnName(i), resultSet.getObject(i));
-            }
-
-            // add ready map row to the list
-            queryData.add(row);
-
-        }
-
-        // print each ror inside the list
+        // Print the results
         for (Map<String, Object> row : queryData) {
             System.out.println(row.toString());
         }
 
-
-
-
-        // CLOSE CONNECTIONS
-        resultSet.close();
-        statement.close();
-        connection.close();
-
+        // Close the connection
+        DBUtils.destroy();
     }
 }
-
-/**
-    Column value —> resultSet.getObject(i)
-    Column name —> rsmd.getColumnName(i) I -> index starts from 1
-    NumberOfColumns —> rsmd.getColumnCount();
-    NumberOfRows —>  while(resultSet.next()){
-                     }
- */

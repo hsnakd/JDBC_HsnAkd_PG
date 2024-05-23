@@ -6,62 +6,84 @@ public class JDBCReview {
 
     public static void main(String[] args) throws SQLException {
 
-        String db_url = "jdbc:oracle:thin:@3.87.65.105:1521:XE";
-        String db_username = "hr";
-        String db_password = "hr";
+        // Connection information for PostgreSQL database
+        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+        String dbUsername = "postgres";
+        String dbPassword = "mysecretpassword";
+        String schemaName = "information_schema";
 
-        Connection connection = DriverManager.getConnection(db_url, db_username, db_password);
-        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_READ_ONLY);
-        ResultSet resultSet = statement.executeQuery("select * from EMPLOYEES");
+        // Connection, statement, and result set objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
 
-        /*
-        when you want to get data from one row, your cursur should be on that row
-         */
+        try {
+            // Connect to the PostgreSQL database
+            connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
 
-        resultSet.next();
-        System.out.println(resultSet.getString(1));
-        System.out.println(resultSet.getString(5));
-        System.out.println(resultSet.getString(7));
-        System.out.println(resultSet.getString("email"));
+            // Create SQL statement
+            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
 
+            // Execute query to retrieve data from the EMPLOYEES table
+            resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".EMPLOYEES");
 
+            /*
+            When you want to get data from one row, your cursor should be on that row
+            */
 
-        resultSet.next();
-        String firstName = resultSet.getString(2);
-        String lastName = resultSet.getString(3);
+            // Move cursor to the first row
+            resultSet.next();
+            // Print data from specific columns
+            System.out.println(resultSet.getString(1));
+            System.out.println(resultSet.getString(5));
+            System.out.println(resultSet.getString(7));
+            System.out.println(resultSet.getString("email"));
 
+            // Move cursor to the next row
+            resultSet.next();
+            // Get data from specific columns and print full name
+            String firstName = resultSet.getString(2);
+            String lastName = resultSet.getString(3);
+            System.out.println("fullName = " + firstName + " " +  lastName);
 
-        System.out.println("fullName = " + firstName + " " +  lastName);
+            // Creating result set meta data
+            ResultSetMetaData rsmd = resultSet.getMetaData();
 
-//        while (resultSet.next()){
-//            System.out.println(resultSet.getString("Job_id"));
-//        }
-//
-//        resultSet.previous();
-//        System.out.println(resultSet.getString(1));
+            // Print column count and column names
+            System.out.println(rsmd.getColumnCount());
+            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                System.out.println(rsmd.getColumnName(i));
+            }
 
-//        resultSet.absolute(20);
-//        System.out.println(resultSet.getString(1));
-//
-//        System.out.println(resultSet.getDouble("Salary"));
+            // Print column type of the first column
+            System.out.println("rsmd.getColumnType(1) = " + rsmd.getColumnType(1));
 
-        // creating result set meta data
-        ResultSetMetaData rsmd = resultSet.getMetaData();
+            // Get database meta data
+            DatabaseMetaData dbmd = connection.getMetaData();
 
-        System.out.println(rsmd.getColumnCount());
-        for (int i = 1; i < 12; i++) {
-            System.out.println(rsmd.getColumnName(i));
+            // Print database user name, driver name, and database product name
+            System.out.println(dbmd.getUserName());
+            System.out.println(dbmd.getDriverName());
+            System.out.println(dbmd.getDatabaseProductName());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close result set, statement, and connection
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
-        System.out.println("rsmd.getColumnType(1) = " + rsmd.getColumnType(1));
-
-        DatabaseMetaData dbmd = connection.getMetaData();
-
-        System.out.println(dbmd.getUserName());
-        System.out.println(dbmd.getDriverName());
-        System.out.println(dbmd.getDatabaseProductName());
-
-
     }
 }

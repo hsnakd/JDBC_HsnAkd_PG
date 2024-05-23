@@ -6,44 +6,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DBUtils {
+public class DBUtils2 {
     private static Connection connection;
     private static Statement statement;
     private static ResultSet resultSet;
 
-    // Database connection details
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String DB_USERNAME = "postgres";
-    private static final String DB_PASSWORD = "mysecretpassword";
-    private static final String SCHEMA_NAME = "information_schema";
-
-    // Method to create a database connection
-    public static Connection createConnection() {
+    public static Connection createConnection(String dbUrl, String dbUsername, String dbPassword) {
         try {
-            connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return connection;
     }
 
-    // Method to create a database connection with schema
-    public static Connection createConnectionWithSchema() {
+    public static Connection createConnection(String dbUrl, String dbUsername, String dbPassword, String schema) {
         try {
-            connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-            connection.setSchema(SCHEMA_NAME);
+            connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+            connection.setSchema(schema);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return connection;
     }
 
-    // Method to get the current connection
     public static Connection getConnection() {
         return connection;
     }
 
-    // Method to close a database connection
     public static void closeConnection(Connection connection) {
         try {
             if (connection != null) {
@@ -54,7 +44,6 @@ public class DBUtils {
         }
     }
 
-    // Method to close a statement
     public static void closeStatement(Statement statement) {
         try {
             if (statement != null) {
@@ -65,7 +54,6 @@ public class DBUtils {
         }
     }
 
-    // Method to close a result set
     public static void closeResultSet(ResultSet resultSet) {
         try {
             if (resultSet != null) {
@@ -76,27 +64,23 @@ public class DBUtils {
         }
     }
 
-    // Method to destroy resources
-    public static void destroy() {
-        closeResultSet(resultSet);
-        closeStatement(statement);
-        closeConnection(connection);
-    }
-
-    // Method to execute a query and return a list of maps
-    public static List<Map<String, Object>> executeQueryAndGetResult(String query) {
+    public static List<Map<String, Object>> getQueryResultMap(String query) {
         List<Map<String, Object>> resultList = new ArrayList<>();
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
+
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
+
             while (resultSet.next()) {
-                Map<String, Object> row = new HashMap<>();
+                Map<String, Object> rowMap = new HashMap<>();
                 for (int i = 1; i <= columnCount; i++) {
-                    row.put(metaData.getColumnName(i), resultSet.getObject(i));
+                    String columnName = metaData.getColumnName(i);
+                    Object columnValue = resultSet.getObject(i);
+                    rowMap.put(columnName, columnValue);
                 }
-                resultList.add(row);
+                resultList.add(rowMap);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,7 +88,6 @@ public class DBUtils {
         return resultList;
     }
 
-    // Method to execute a query and return a list of objects
     public static List<Object> getQueryResultList(String query) {
         List<Object> resultList = new ArrayList<>();
         try {
@@ -120,7 +103,6 @@ public class DBUtils {
         return resultList;
     }
 
-    // Method to execute a query and return a single row as a map
     public static Map<String, Object> getRowMap(String query) {
         Map<String, Object> rowMap = null;
         try {
@@ -144,7 +126,6 @@ public class DBUtils {
         return rowMap;
     }
 
-    // Method to execute an update query and return the number of affected rows
     public static int executeUpdate(String query) {
         int rowsAffected = 0;
         try {
@@ -155,27 +136,10 @@ public class DBUtils {
         }
         return rowsAffected;
     }
-    public static List<Map<String, Object>> getQueryResultMap(String query) {
-        List<Map<String, Object>> resultList = new ArrayList<>();
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
 
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int columnCount = metaData.getColumnCount();
-
-            while (resultSet.next()) {
-                Map<String, Object> rowMap = new HashMap<>();
-                for (int i = 1; i <= columnCount; i++) {
-                    String columnName = metaData.getColumnName(i);
-                    Object columnValue = resultSet.getObject(i);
-                    rowMap.put(columnName, columnValue);
-                }
-                resultList.add(rowMap);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return resultList;
+    public static void destroy() {
+        closeResultSet(resultSet);
+        closeStatement(statement);
+        closeConnection(connection);
     }
 }

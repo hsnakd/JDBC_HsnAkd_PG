@@ -1,47 +1,58 @@
 package jdbctests;
 
 import org.junit.jupiter.api.Test;
-import utilities.DBUtils;
-
 import java.sql.*;
 
 public class LibraryConnectionTest {
 
     @Test
-    public void test1() throws SQLException {
-        String ipNumber = "34.230.35.214";
-        String dbUrl = "jdbc:mysql://" + ipNumber + ":3306/library1";
-        String dbUsername = "library1_client";
-        String dbPassword = "WVF4NdGXCKHeE6VQ";
-
-        Connection connection = DriverManager.getConnection(dbUrl,dbUsername,dbPassword);
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM books");
-
-        //once you set up connection default pointer looks for 0
-        //next() --> move pointer to first row
-        resultSet.next();
-
-        System.out.println(resultSet.getString(2));
+    public void test1() {
+        // Database connection details
+        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+        String dbUsername = "postgres";
+        String dbPassword = "mysecretpassword";
+        String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
 
-        //close connection
-        resultSet.close();
-        statement.close();
-        connection.close();
+        try {
+            // Establishing connection to the PostgreSQL database
+            Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM "+schemaName+".books");
 
+            // Moving pointer to the first row
+            resultSet.next();
 
+            // Printing the value of the second column in the first row
+            System.out.println(resultSet.getString(2));
+
+            // Closing connection
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // or handle the exception as needed
+        }
     }
 
     @Test
-    public void test2(){
-        String ipNumber = "34.230.35.214";
-        String dbUrl = "jdbc:mysql://" + ipNumber + ":3306/library1";
-        String dbUsername = "library1_client";
-        String dbPassword = "WVF4NdGXCKHeE6VQ";
+    public void test2() {
+        // Database connection details
+        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+        String dbUsername = "postgres";
+        String dbPassword = "mysecretpassword";
+        String schemaName = "information_schema";
 
-        DBUtils.createConnection(dbUrl,dbUsername,dbPassword);
+        try {
+            // Establishing connection to the PostgresSQL database
+            Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
 
-        DBUtils.destroy();
+            // No need to implement a specific method to create and destroy connections for PostgreSQL
+            // DBUtils.createConnection(dbUrl, dbUsername, dbPassword);
+            // DBUtils.destroy();
+            // Connection handling will be done directly in each method or through a separate utility if needed.
+        } catch (SQLException e) {
+            e.printStackTrace(); // or handle the exception as needed
+        }
     }
 }

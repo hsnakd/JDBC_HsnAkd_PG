@@ -4,69 +4,44 @@ import java.sql.*;
 
 public class TestConnection {
     public static void main(String[] args) throws SQLException {
-//        In order to test Database using JAVA, First step we need to connect Database via
-//        Connection String. It includes URL - Username - Password
-//                      jdbc:DataBaseType:subprotocol:@Host:port:SID
-        String dbURL = "jdbc:oracle:thin:@3.86.235.137:1521:xe";
-        String dbUsername ="hr";
-        String dbPassword ="hr";
+        // Database connection details
+        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+        String dbUsername = "postgres";
+        String dbPassword = "mysecretpassword";
+        String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
-//  This 3 steps are important and all comes from import java.sql.*;
-//        Connection —> Helps our java project connect to database
-//        Statement —> Helps to write and execute SQL query
-//        ResultSet —> A data structure where we can store the data that came from database
+        // Establish the connection
+        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
 
-        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
+        // Create a Statement
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM REGIONS");
-//
-//        try {
-//            Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM REGIONS");
-//            resultSet.next();
-//
-//            // getting information with column name
-//            String result = resultSet.getString("REGION_NAME");
-//            System.out.println("With Column Name : " + result);
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
 
+        // Execute the query
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".regions");
 
-        // once you set up connection default pointer looks for 0
-
-
-        // next() ==> move pointer to first row
+        // Move the pointer to the first row
         resultSet.next();
 
-        // getting information with column name
-        String result = resultSet.getString("REGION_NAME");
+        // Retrieve and print information using column name
+        String result = resultSet.getString("region_name");
         System.out.println("With Column Name : " + result);
 
-        // getting information with column index (starts 1)
+        // Retrieve and print information using column index (starting from 1)
         String result2 = resultSet.getString(2);
         System.out.println("With Index Number : " + result2);
 
-        // 1 - Europe
+        // Print the first row data
         System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
 
-        // next() ==> move pointer to next row ==> 2
+        // Move to the next row and print its data
         resultSet.next();
-
-        // 2 - Americas
         System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
 
-        // next() ==> move pointer to next row ==> 3
+        // Move to the next row and print its data
         resultSet.next();
-
-        // 3 - Asia
         System.out.println(resultSet.getInt(1) + " - " + resultSet.getString(2));
 
-
-
-        // CLOSE CONNECTIONS
+        // Close connections
         resultSet.close();
         statement.close();
         connection.close();

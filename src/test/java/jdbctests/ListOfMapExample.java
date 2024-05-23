@@ -9,14 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 public class ListOfMapExample {
-    String dbURL = "jdbc:oracle:thin:@3.86.235.137:1521:xe";
-    String dbUsername ="hr";
-    String dbPassword ="hr";
+    // Database connection details
+    String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+    String dbUsername = "postgres";
+    String dbPassword = "mysecretpassword";
+    String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
     @Test
     public void test1() throws SQLException {
 
-    // creating list for keeping all the rows maps
+    // creating a list for keeping all the rows maps
         List<Map<String, Object>> queryData = new ArrayList<>();
 
         Map<String, Object> row1 = new HashMap<>();
@@ -49,53 +51,35 @@ public class ListOfMapExample {
 
     @Test
     public void test2() throws SQLException {
-        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
+        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY\n" +
-                "FROM EMPLOYEES\n" +  "WHERE ROWNUM < 6");
+        ResultSet resultSet = statement.executeQuery("SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY " +
+                "FROM " + schemaName + ".EMPLOYEES " +
+                "LIMIT 5");
 
-
-    // in order to get column names we need resultSetMetaData
+        // In order to get column names we need resultSetMetaData
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 
-    // move to first row
-        resultSet.next();
-
-    // creating list for keeping all the rows maps
+        // Creating list for keeping all the rows as maps
         List<Map<String, Object>> queryData = new ArrayList<>();
 
-        Map<String, Object> row1 = new HashMap<>();
+        // Iterate through result set and populate the list
+        while (resultSet.next()) {
+            Map<String, Object> row = new HashMap<>();
+            for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
+                row.put(resultSetMetaData.getColumnName(i), resultSet.getObject(i));
+            }
+            queryData.add(row);
+        }
 
-        row1.put(resultSetMetaData.getColumnName(1),resultSet.getString(1));
-        row1.put(resultSetMetaData.getColumnName(2),resultSet.getString(2));
-        row1.put(resultSetMetaData.getColumnName(3),resultSet.getString(3));
-        row1.put(resultSetMetaData.getColumnName(4),resultSet.getString(4));
+        // Print all rows
+        for (Map<String, Object> row : queryData) {
+            System.out.println(row.toString());
+        }
 
-        System.out.println("row1 = " + row1.toString());
-
-    // move to second row
-        resultSet.next();
-
-        Map<String, Object> row2 = new HashMap<>();
-
-        row2.put(resultSetMetaData.getColumnName(1),resultSet.getString(1));
-        row2.put(resultSetMetaData.getColumnName(2),resultSet.getString(2));
-        row2.put(resultSetMetaData.getColumnName(3),resultSet.getString(3));
-        row2.put(resultSetMetaData.getColumnName(4),resultSet.getString(4));
-
-        System.out.println("row2 = " + row2.toString());
-
-
-    // adding rows one by one to my list
-        queryData.add(row1);
-        queryData.add(row2);
-
-
-        // CLOSE CONNECTIONS
+        // Close connections
         resultSet.close();
         statement.close();
         connection.close();
-
     }
-
 }

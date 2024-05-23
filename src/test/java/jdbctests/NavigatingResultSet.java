@@ -4,25 +4,37 @@ import java.sql.*;
 
 public class NavigatingResultSet {
     public static void main(String[] args) throws SQLException {
-        String dbURL = "jdbc:oracle:thin:@3.86.235.137:1521:xe";
-        String dbUsername ="hr";
-        String dbPassword ="hr";
+        // Database connection details
+        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+        String dbUsername = "postgres";
+        String dbPassword = "mysecretpassword";
+        String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
+        // Establish the connection
+        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
 
-        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
+        // Create a Statement with scrollable and read-only ResultSet
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM REGIONS");
 
+        // Execute the query
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".regions");
+
+        // Navigate the ResultSet
         resultSet.next();
         System.out.println("next() : " + resultSet.getString(1) + " - " + resultSet.getString(2));
+
         resultSet.first();
         System.out.println("first() : " + resultSet.getString(1) + " - " + resultSet.getString(2));
+
         resultSet.last();
         System.out.println("last() : " + resultSet.getString(1) + " - " + resultSet.getString(2));
+
         resultSet.previous();
         System.out.println("previous() : " + resultSet.getString(1) + " - " + resultSet.getString(2));
+
         resultSet.first();
         System.out.println("first() : " + resultSet.getString(1) + " - " + resultSet.getString(2));
+
         resultSet.absolute(2);
         System.out.println("absolute(2) : " + resultSet.getString(1) + " - " + resultSet.getString(2));
 
@@ -37,7 +49,7 @@ public class NavigatingResultSet {
         resultSet.last();
         System.out.println("Row count is : " + resultSet.getRow());
 
-        // CLOSE CONNECTIONS
+        // Close connections
         resultSet.close();
         statement.close();
         connection.close();
@@ -45,21 +57,20 @@ public class NavigatingResultSet {
 }
 
 /*
- * next()        ==> move to next row and return true/false according to if we have valid row
- * previous()    ==> move to previous row and return true/false according to if we have valid row
- * first()       ==> move to first row from anywhere
- * last()        ==> move to last row from anywhere
- * beforeFirst() ==> move to before first location from anywhere
- * afterLast()   ==> move to after last location from anywhere
- * absolute(8)   ==> move to any row by using row number, for example 8 in this case
+ * next()        ==> Move to the next row and return true/false based on whether a valid row exists
+ * previous()    ==> Move to the previous row and return true/false based on whether a valid row exists
+ * first()       ==> Move to the first row from anywhere
+ * last()        ==> Move to the last row from anywhere
+ * beforeFirst() ==> Move to the before first location from anywhere
+ * afterLast()   ==> Move to the after last location from anywhere
+ * absolute(8)   ==> Move to any row using the row number, for example, 8 in this case
 
- * getString(ColumnName)     ==>
- * getString(ColumnIndex)    ==>
- * getInt(ColumnName)        ==>
- * getInt(ColumnIndex)       ==>
- * getDouble(ColumnName)     ==>
- * getDouble(ColumnIndex)    ==>
- * getDate(ColumnName)       ==>
- * getDate(ColumnIndex)      ==>
-
+ * getString(ColumnName)     ==> Retrieve the value of the specified column as a String using column name
+ * getString(ColumnIndex)    ==> Retrieve the value of the specified column as a String using column index
+ * getInt(ColumnName)        ==> Retrieve the value of the specified column as an int using column name
+ * getInt(ColumnIndex)       ==> Retrieve the value of the specified column as an int using column index
+ * getDouble(ColumnName)     ==> Retrieve the value of the specified column as a double using column name
+ * getDouble(ColumnIndex)    ==> Retrieve the value of the specified column as a double using column index
+ * getDate(ColumnName)       ==> Retrieve the value of the specified column as a Date using column name
+ * getDate(ColumnIndex)      ==> Retrieve the value of the specified column as a Date using column index
  */
