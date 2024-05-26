@@ -12,12 +12,12 @@ public class NavigatingResultSet {
 
         // Establish the connection
         Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-
+        connection.setSchema(schemaName);
         // Create a Statement with scrollable and read-only ResultSet
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
         // Execute the query
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".regions");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM regions");
 
         // Navigate the ResultSet
         resultSet.next();

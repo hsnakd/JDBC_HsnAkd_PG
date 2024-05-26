@@ -18,7 +18,7 @@ public class ListOfMapExample {
     @Test
     public void test1() throws SQLException {
 
-    // creating a list for keeping all the rows maps
+    // creating a list for keeping all the row maps
         List<Map<String, Object>> queryData = new ArrayList<>();
 
         Map<String, Object> row1 = new HashMap<>();
@@ -52,18 +52,19 @@ public class ListOfMapExample {
     @Test
     public void test2() throws SQLException {
         Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+        connection.setSchema(schemaName);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY " +
-                "FROM " + schemaName + ".EMPLOYEES " +
-                "LIMIT 5");
+                                                          "FROM EMPLOYEES " +
+                                                          "LIMIT 5");
 
-        // In order to get column names we need resultSetMetaData
+        // To get column names, we need resultSetMetaData
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 
-        // Creating list for keeping all the rows as maps
+        // Creating a list for keeping all the rows as maps
         List<Map<String, Object>> queryData = new ArrayList<>();
 
-        // Iterate through result set and populate the list
+        // Iterate through a result set and populate the list
         while (resultSet.next()) {
             Map<String, Object> row = new HashMap<>();
             for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {

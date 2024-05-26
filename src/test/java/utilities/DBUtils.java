@@ -26,6 +26,15 @@ public class DBUtils {
         }
         return connection;
     }
+    // Method to create a database connection
+    public static Connection createConnection(String DB_URL, String DB_USERNAME, String DB_PASSWORD) {
+        try {
+            connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
 
     // Method to create a database connection with schema
     public static Connection createConnectionWithSchema() {

@@ -11,14 +11,15 @@ public class LibraryConnectionTest {
         String dbURL = "jdbc:postgresql://localhost:5432/postgres";
         String dbUsername = "postgres";
         String dbPassword = "mysecretpassword";
-        String schemaName = "information_schema";  // Typically, user tables are in the public schema
+        String SCHEMA_NAME = "information_schema";      // Typically, user tables are in the public schema
 
 
         try {
             // Establishing connection to the PostgreSQL database
             Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM "+schemaName+".books");
+            connection.setSchema(SCHEMA_NAME);
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM books");
 
             // Moving pointer to the first row
             resultSet.next();

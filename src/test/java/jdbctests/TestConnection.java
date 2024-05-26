@@ -12,12 +12,14 @@ public class TestConnection {
 
         // Establish the connection
         Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+        connection.setSchema(schemaName);
 
         // Create a Statement
         Statement statement = connection.createStatement();
 
+
         // Execute the query
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".regions");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM regions");
 
         // Move the pointer to the first row
         resultSet.next();

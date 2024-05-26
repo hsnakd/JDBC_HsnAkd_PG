@@ -19,13 +19,16 @@ public class TableLister {
             String url = "jdbc:postgresql://localhost:5432/postgres";
             String user = "postgres";
             String password = "mysecretpassword";
+            String schemaName = "information_schema";  // Typically, user tables are in the public schema
+
             connection = DriverManager.getConnection(url, user, password);
+            connection.setSchema(schemaName);
 
             // Create a statement object
             statement = connection.createStatement();
 
             // Create the query
-            String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'information_schema'";
+            String sql = "SELECT table_name FROM tables WHERE table_schema = 'information_schema'";
 
             // Execute the query and get the result set
             resultSet = statement.executeQuery(sql);

@@ -17,10 +17,11 @@ public class PostgreSQLJDBC {
             // Create connection to the PostgreSQL database
 //            connection = DBUtils.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
             connection = DBUtils.createConnection();
+            connection.setSchema(schemaName);
 
             // Create a statement to execute queries
             statement = connection.createStatement();
-            String sql = "SELECT * FROM "+schemaName+".employees"; // Change the query according to your database schema
+            String sql = "SELECT * FROM employees"; // Change the query according to your database schema
             resultSet = statement.executeQuery(sql);
 
             // Process the results

@@ -22,11 +22,11 @@ public class DynamicList {
 
         // Connect to Docker PostgreSQL container
 //        DBUtils2.createConnection(dbURL, dbUsername, dbPassword);
-        DBUtils.createConnection();
+        DBUtils.createConnectionWithSchema();
 
         // SQL query
         String sql = "SELECT table_name, table_schema\n" +
-                "FROM "+schemaName+".tables\n" +
+                "FROM tables\n" +
                 "WHERE table_schema = 'information_schema'\n" +
                 "LIMIT 5";
 

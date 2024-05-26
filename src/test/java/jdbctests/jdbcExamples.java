@@ -10,18 +10,18 @@ public class jdbcExamples {
 //    String dbURL = "jdbc:postgresql://localhost:5432/postgres";
 //    String dbUsername ="postgres";
 //    String dbPassword ="mysecretpassword";
-    String schemaName = "information_schema";  // Typically, user tables are in the public schema
+//    String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
     @Test
     public void test1() throws SQLException {
 
         // Create a connection to PostgreSQL using DBUtils
 //        DBUtils2.createConnection(dbURL, dbUsername, dbPassword);
-        DBUtils.createConnection();
+        DBUtils.createConnectionWithSchema();
         Connection connection = DBUtils.getConnection(); // Get the connection object
         Statement statement = connection.createStatement(); // Create a statement object
 
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".DEPARTMENTS");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM DEPARTMENTS");
 
         // Iterate through the result set and print the data
         while (resultSet.next()){
@@ -31,7 +31,7 @@ public class jdbcExamples {
                     + resultSet.getInt(4));
         }
 
-        resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".REGIONS");
+        resultSet = statement.executeQuery("SELECT * FROM REGIONS");
 
         // Iterate through the result set and print the data
         while (resultSet.next()){
@@ -49,11 +49,11 @@ public class jdbcExamples {
 
         // Create a connection to PostgreSQL using DBUtils
 //        DBUtils2.createConnection(dbURL, dbUsername, dbPassword);
-        DBUtils.createConnection();
+        DBUtils.createConnectionWithSchema();
         Connection connection = DBUtils.getConnection(); // Get the connection object
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".DEPARTMENTS");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM DEPARTMENTS");
 
         resultSet.last(); // Move the cursor to the last row
         int rowCount = resultSet.getRow(); // Get the row count
@@ -75,11 +75,11 @@ public class jdbcExamples {
     public void test3() throws SQLException {
         // Create a connection to PostgreSQL using DBUtils
 //        DBUtils.createConnection(dbURL, dbUsername, dbPassword);
-        DBUtils.createConnection();
+        DBUtils.createConnectionWithSchema();
         Connection connection = DBUtils.getConnection(); // Get the connection object
         Statement statement = connection.createStatement();
 
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + schemaName + ".DEPARTMENTS");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM DEPARTMENTS");
 
         // Get metadata about the database and print it
         DatabaseMetaData databaseMetaData = connection.getMetaData();

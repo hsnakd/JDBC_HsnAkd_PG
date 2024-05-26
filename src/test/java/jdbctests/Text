@@ -1,49 +1,47 @@
- * host     ==> @3.86.235.137
- * port     ==> 1521
- * SID      ==> XE (EXPRESS EDITION)
- * user     ==> hr
- * pass     ==> hr
+    // Database connection details
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
+    private static final String DB_USERNAME = "postgres";
+    private static final String DB_PASSWORD = "mysecretpassword";
+    private static final String SCHEMA_NAME = "information_schema";
 
  * jdbc
 
 
-                        jdbc:DataBaseType:subprotocol:@Host:port:SID
-        String dbURL = "jdbc:oracle:thin:@3.86.235.137:1521:XE";
+                        jdbc:DataBaseType://Host:port/database
+        String dbURL = "jdbc:postgresql://3.86.235.137:5432/mydatabase";
         String dbUsername ="hr";
         String dbPassword ="hr";
 
     /**
-        This 3 steps are important and all comes from import java.sql.*;
-            Connection —> Helps our java project connect to database
-            Statement —> Helps to write and execute SQL query
-            ResultSet —> A data structure where we can store the data that came from database
+        These 3 steps are important and all come from import java.sql.*;
+            Connection —> Helps our Java project connect to the database
+            Statement —> Helps to write and execute SQL queries
+            ResultSet —> A data structure where we can store the data that came from the database
     */
 
-        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
+        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
         Statement statement = connection.createStatement();
 //        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         ResultSet resultSet = statement.executeQuery("SELECT * FROM REGIONS");
 
+    // We use next() method to iterate through each row
+    // While the next row is not NULL we can continue to iterate
+    // If the next row is NULL (empty), it exits the loop immediately
+    // You can use getString(columnName) to get the cell value
 
+* next()        ==> move to the next row and return true/false according to if we have a valid row
+* previous()    ==> move to the previous row and return true/false according to if we have a valid row
+* first()       ==> move to the first row from anywhere
+* last()        ==> move to the last row from anywhere
+* beforeFirst() ==> move to before the first location from anywhere
+* afterLast()   ==> move to after the last location from anywhere
+* absolute(8)   ==> move to any row by using the row number, for example, 8 in this case
 
-    We use next() method to iterate each rows
-    While the next row is not NULL we can continue to iterate
-    If next row is NULL (empty),it exits the loop immediately
-    You can use getString(columnName) to get cell value
-
-* next()        ==> move to next row and return true/false according to if we have valid row
-* previous()    ==> move to previous row and return true/false according to if we have valid row
-* first()       ==> move to first row from anywhere
-* last()        ==> move to last row from anywhere
-* beforeFirst() ==> move to before first location from anywhere
-* afterLast()   ==> move to after last location from anywhere
-* absolute(8)   ==> move to any row by using row number, for example 8 in this case
-
-* getString(ColumnName)     ==>
-* getString(ColumnIndex)    ==>
-* getInt(ColumnName)        ==>
-* getInt(ColumnIndex)       ==>
-* getDouble(ColumnName)     ==>
-* getDouble(ColumnIndex)    ==>
-* getDate(ColumnName)       ==>
-* getDate(ColumnIndex)      ==>
+* getString(ColumnName)     ==> Retrieve the value of the specified column as a String
+* getString(ColumnIndex)    ==> Retrieve the value of the specified column by index as a String
+* getInt(ColumnName)        ==> Retrieve the value of the specified column as an integer
+* getInt(ColumnIndex)       ==> Retrieve the value of the specified column by index as an integer
+* getDouble(ColumnName)     ==> Retrieve the value of the specified column as a double
+* getDouble(ColumnIndex)    ==> Retrieve the value of the specified column by index as a double
+* getDate(ColumnName)       ==> Retrieve the value of the specified column as a date
+* getDate(ColumnIndex)      ==> Retrieve the value of the specified column by index as a date

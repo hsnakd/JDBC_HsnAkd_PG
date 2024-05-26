@@ -6,7 +6,7 @@ import utilities.DBUtils;
 import java.util.List;
 import java.util.Map;
 
-public class DButilPractice {
+public class DButilPractice_WithoutSchema {
 
     String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
