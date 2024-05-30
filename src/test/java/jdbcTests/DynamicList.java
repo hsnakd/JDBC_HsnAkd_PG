@@ -1,4 +1,4 @@
-package jdbctests;
+package jdbcTests;
 
 import org.junit.jupiter.api.Test;
 import utilities.DBUtils;
@@ -18,7 +18,7 @@ public class DynamicList {
 //        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
 //        String dbUsername = "postgres";
 //        String dbPassword = "mysecretpassword";
-        String schemaName = "information_schema";  // Typically, user tables are in the public schema
+//        String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
         // Connect to Docker PostgreSQL container
 //        DBUtils2.createConnection(dbURL, dbUsername, dbPassword);

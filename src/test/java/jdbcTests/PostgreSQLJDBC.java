@@ -1,4 +1,4 @@
-package jdbctests;
+package jdbcTests;
 
 import utilities.DBUtils;
 
@@ -11,13 +11,12 @@ public class PostgreSQLJDBC {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-        String schemaName = "information_schema";  // Typically, user tables are in the public schema
+//        String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
         try {
             // Create connection to the PostgreSQL database
 //            connection = DBUtils.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
-            connection = DBUtils.createConnection();
-            connection.setSchema(schemaName);
+            connection = DBUtils.createConnectionWithSchema();
 
             // Create a statement to execute queries
             statement = connection.createStatement();

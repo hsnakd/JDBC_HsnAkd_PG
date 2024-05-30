@@ -1,4 +1,4 @@
-package jdbctests;
+package jdbcTests;
 
 import org.junit.jupiter.api.Test;
 import utilities.DBUtils;
@@ -6,25 +6,28 @@ import utilities.DBUtils;
 import java.util.List;
 import java.util.Map;
 
-public class DButilPractice_WithoutSchema {
-
-    String schemaName = "information_schema";  // Typically, user tables are in the public schema
+public class DButilPractice_WithoutParameters {
 
     @Test
     public void test1(){
+        // Database connection details
+        String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
+        String DB_USERNAME = "postgres";
+        String DB_PASSWORD = "mysecretpassword";
+        String SCHEMA_NAME = "information_schema";      // Typically, user tables are in the public schema
 
         //create connection to db that you put information inside the method
 //        DBUtils2.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
-        DBUtils.createConnection();
+        DBUtils.createConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 
         int rownum = 6;
         String query = "SELECT first_name,last_name,salary,job_id\n" +
-                "from " + schemaName + ".employees\n" +
+                "from " + SCHEMA_NAME + ".employees\n" +
                 "LIMIT " + rownum;   // PostgreSQL
         // oracle    "where rownum <" + rownum;
 
         // DBUtils.getQueryResultMap(query)
-        // —> returns list of maps, useful when you are getting multiple rows of result.
+        // —> returns list of maps, useful when you are getting multiple rows of a result.
         List<Map<String, Object>> queryData = DBUtils.getQueryResultMap(query);
 
         //print the result

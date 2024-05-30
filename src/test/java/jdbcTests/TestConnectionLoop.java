@@ -1,13 +1,16 @@
-package jdbctests;
+package jdbcTests;
+
+import utilities.DBUtils;
 
 import java.sql.*;
 
 public class TestConnectionLoop {
     public static void main(String[] args) {
         // Connection information for PostgreSQL database
-        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
-        String dbUsername = "postgres";
-        String dbPassword = "mysecretpassword";
+//        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+//        String dbUsername = "postgres";
+//        String dbPassword = "mysecretpassword";
+//        String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
         // Connection, statement, and result set objects
         Connection connection = null;
@@ -16,7 +19,8 @@ public class TestConnectionLoop {
 
         try {
             // Connect to the PostgreSQL database
-            connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+//            connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+            connection = DBUtils.createConnection();
 
             // Create SQL statement
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

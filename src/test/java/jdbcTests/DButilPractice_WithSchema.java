@@ -1,4 +1,4 @@
-package jdbctests;
+package jdbcTests;
 
 import org.junit.jupiter.api.Test;
 import utilities.DBUtils;
@@ -15,10 +15,7 @@ public class DButilPractice_WithSchema {
 //        DBUtils2.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
         DBUtils.createConnectionWithSchema();
 
-        int rownum = 6;
-        String query =  "SELECT * \n" +
-                "from employees\n" ;   // PostgreSQL
-        // oracle    "where rownum <" + rownum;
+        String query =  "SELECT * from employees" ;
 
         // DBUtils.getQueryResultMap(query)
         // —> returns list of maps, useful when you are getting multiple rows of a result.
@@ -42,7 +39,7 @@ public class DButilPractice_WithSchema {
         DBUtils.createConnectionWithSchema();
 
         int rownum = 6;
-        String query =  "SELECT first_name,last_name,salary,job_id\n" +
+        String query =  "SELECT first_name, last_name, salary, job_id\n" +
                         "from employees\n" +
                         "LIMIT " + rownum;   // PostgreSQL
         // oracle    "where rownum <" + rownum;
@@ -66,8 +63,7 @@ public class DButilPractice_WithSchema {
         //create connection
 //        DBUtils2.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
         DBUtils.createConnectionWithSchema();
-        String query =  "SELECT first_name,last_name,salary,job_id\n" +
-                        "from employees\n" +
+        String query =  "SELECT first_name,last_name,salary,job_id from employees\n" +
                         "LIMIT 6"; // PostgreSQL
           // oracle      "where rownum <2";
 

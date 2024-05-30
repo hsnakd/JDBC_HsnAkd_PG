@@ -1,7 +1,8 @@
-package jdbctests;
+package jdbcTests;
+
+import utilities.DBUtils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -16,13 +17,13 @@ public class TableLister {
             Class.forName("org.postgresql.Driver");
 
             // Connect to the database
-            String url = "jdbc:postgresql://localhost:5432/postgres";
-            String user = "postgres";
-            String password = "mysecretpassword";
-            String schemaName = "information_schema";  // Typically, user tables are in the public schema
+//            String url = "jdbc:postgresql://localhost:5432/postgres";
+//            String user = "postgres";
+//            String password = "mysecretpassword";
+//            String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
-            connection = DriverManager.getConnection(url, user, password);
-            connection.setSchema(schemaName);
+//            connection = DBUtils.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
+            connection = DBUtils.createConnectionWithSchema();
 
             // Create a statement object
             statement = connection.createStatement();

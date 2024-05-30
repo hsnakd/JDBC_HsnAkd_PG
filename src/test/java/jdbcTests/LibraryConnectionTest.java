@@ -1,6 +1,8 @@
-package jdbctests;
+package jdbcTests;
 
 import org.junit.jupiter.api.Test;
+import utilities.DBUtils;
+
 import java.sql.*;
 
 public class LibraryConnectionTest {
@@ -8,20 +10,22 @@ public class LibraryConnectionTest {
     @Test
     public void test1() {
         // Database connection details
-        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
-        String dbUsername = "postgres";
-        String dbPassword = "mysecretpassword";
-        String SCHEMA_NAME = "information_schema";      // Typically, user tables are in the public schema
+//        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+//        String dbUsername = "postgres";
+//        String dbPassword = "mysecretpassword";
+//        String SCHEMA_NAME = "information_schema";      // Typically, user tables are in the public schema
 
 
         try {
             // Establishing connection to the PostgreSQL database
-            Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+//            Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+            Connection connection = DBUtils.createConnectionWithSchema();
+
             Statement statement = connection.createStatement();
-            connection.setSchema(SCHEMA_NAME);
+
             ResultSet resultSet = statement.executeQuery("SELECT * FROM books");
 
-            // Moving pointer to the first row
+            // Moving a pointer to the first row
             resultSet.next();
 
             // Printing the value of the second column in the first row

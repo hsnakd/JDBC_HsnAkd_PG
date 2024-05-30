@@ -1,6 +1,7 @@
-package jdbctests;
+package jdbcTests;
 
 import org.junit.jupiter.api.Test;
+import utilities.DBUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,10 +11,10 @@ import java.util.Map;
 
 public class ListOfMapExample {
     // Database connection details
-    String dbURL = "jdbc:postgresql://localhost:5432/postgres";
-    String dbUsername = "postgres";
-    String dbPassword = "mysecretpassword";
-    String schemaName = "information_schema";  // Typically, user tables are in the public schema
+//    String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+//    String dbUsername = "postgres";
+//    String dbPassword = "mysecretpassword";
+//    String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
     @Test
     public void test1() throws SQLException {
@@ -51,8 +52,10 @@ public class ListOfMapExample {
 
     @Test
     public void test2() throws SQLException {
-        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-        connection.setSchema(schemaName);
+//        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+//        connection.setSchema(schemaName);
+        Connection connection = DBUtils.createConnectionWithSchema();
+
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY " +
                                                           "FROM EMPLOYEES " +

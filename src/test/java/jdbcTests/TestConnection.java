@@ -1,4 +1,6 @@
-package jdbctests;
+package jdbcTests;
+
+import utilities.DBUtils;
 
 import java.sql.*;
 
@@ -11,8 +13,10 @@ public class TestConnection {
         String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
         // Establish the connection
-        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-        connection.setSchema(schemaName);
+//        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+//        connection.setSchema(schemaName);
+        //            connection = DBUtils.createConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mysecretpassword");
+        Connection connection = DBUtils.createConnectionWithSchema();
 
         // Create a Statement
         Statement statement = connection.createStatement();

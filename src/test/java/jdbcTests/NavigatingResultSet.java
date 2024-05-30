@@ -1,18 +1,23 @@
-package jdbctests;
+package jdbcTests;
+
+import utilities.DBUtils;
 
 import java.sql.*;
 
 public class NavigatingResultSet {
     public static void main(String[] args) throws SQLException {
         // Database connection details
-        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
-        String dbUsername = "postgres";
-        String dbPassword = "mysecretpassword";
-        String schemaName = "information_schema";  // Typically, user tables are in the public schema
+//        String dbURL = "jdbc:postgresql://localhost:5432/postgres";
+//        String dbUsername = "postgres";
+//        String dbPassword = "mysecretpassword";
+//        String schemaName = "information_schema";  // Typically, user tables are in the public schema
 
         // Establish the connection
-        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-        connection.setSchema(schemaName);
+//        Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+//        connection.setSchema(schemaName);
+        Connection connection = DBUtils.createConnectionWithSchema();
+
+
         // Create a Statement with scrollable and read-only ResultSet
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
